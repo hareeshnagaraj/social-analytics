@@ -10,6 +10,10 @@ var users = require('./routes/users');
 
 var app = express();
 
+//Passportjs used for facebook login
+var passport = require('passport');
+var FacebookStrategy = require('passport-facebook').Strategy;
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -31,6 +35,20 @@ app.use(function(req, res, next) {
     err.status = 404;
     next(err);
 });
+
+//passport calls for facebook
+passport.use(new FacebookStrategy({
+    clientID: FACEBOOK_APP_ID,
+    clientSecret: FACEBOOK_APP_SECRET,
+    callbackURL: "http://www.example.com/auth/facebook/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    User.findOrCreate(..., function(err, user) {
+      if (err) { return done(err); }
+      done(null, user);
+    });
+  }
+));
 
 // error handlers
 
