@@ -1,3 +1,4 @@
 #Ignores app.js for key reasons
 */app/app.js
 app.js
+*/app/node_modules/*
